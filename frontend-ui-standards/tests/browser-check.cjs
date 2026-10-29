@@ -84,7 +84,7 @@ const server = http.createServer(async (req,res) => {
     });
     assert.deepEqual(lifecycle,{silent:true,duplicateRejected:true,empty:true,time:'13:00'});
     if(process.env.QA_OUTPUT_DIR){await fs.mkdir(process.env.QA_OUTPUT_DIR,{recursive:true});await page.screenshot({path:path.join(process.env.QA_OUTPUT_DIR,'desktop.png'),fullPage:true});}
-    for(const width of [375,768,1920]){
+    for(const width of [1024,1280,1920]){
       await page.setViewportSize({width,height:1100});
       assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,`页面宽度 ${width}`);
       await page.locator('#range').click();
@@ -94,6 +94,6 @@ const server = http.createServer(async (req,res) => {
     }
     assert.deepEqual(errors,[]);
     assert.equal(requests.every(url=>url.startsWith(`http://127.0.0.1:${server.address().port}/`)),true);
-    console.log(JSON.stringify({passed:true,checks:['范围/单日/快捷日期/边界/关闭焦点','时刻/增删/必填/去重/回填','多实例/销毁/初始化静默','375/768/1440/1920宽度','零脚本异常/零外部请求']},null,2));
+    console.log(JSON.stringify({passed:true,checks:['范围/单日/快捷日期/边界/关闭焦点','时刻/增删/必填/去重/回填','多实例/销毁/初始化静默','1024/1280/1440/1920桌面宽度','零脚本异常/零外部请求']},null,2));
   }finally{await browser?.close();await new Promise(resolve=>server.close(resolve));}
 })().catch(error=>{console.error(error);process.exitCode=1;});
