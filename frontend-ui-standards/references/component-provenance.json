@@ -1,0 +1,31 @@
+{
+  "version": "1.0.0",
+  "extractedOn": "2026-10-29",
+  "sourceRevision": "847ab8846598e8b233c571b06adb2f9783cbe879",
+  "files": [
+    {
+      "file": "shared-date-range-picker.js",
+      "sourceFile": "shared-date-range-picker.js",
+      "sourceSha256": "e75b7eacd5ad217e90c23f633919ab74e308cd889710184da0e4b64f48e63728",
+      "extraction": "unchanged"
+    },
+    {
+      "file": "shared-date-range-picker.css",
+      "sourceFile": "shared-date-range-picker.css",
+      "sourceSha256": "5eb0cde694ab7bc973e26664fcf3c63cdc75a8056e5d89504784bbdaa2021ca4",
+      "extraction": "unchanged"
+    },
+    {
+      "file": "shared-time-picker.js / shared-time-picker.css",
+      "sourceFile": "daily-work-dashboard.html",
+      "sourceSha256": "3407b7dddc5186d64c5ffa2f674b991b033ca0cc5989eb0f08882bcc46339892",
+      "extraction": "scheduleTimeRow, scheduleSummary, bindScheduleControls and schedule/weekday styles; isolated API and CSS scope, no business API"
+    }
+  ],
+  "bundleSha256": {
+    "shared-date-range-picker.css": "5eb0cde694ab7bc973e26664fcf3c63cdc75a8056e5d89504784bbdaa2021ca4",
+    "shared-date-range-picker.js": "e75b7eacd5ad217e90c23f633919ab74e308cd889710184da0e4b64f48e63728",
+    "shared-time-picker.css": "1f66f7b1ee4c021ba72bd11a755c14e5116eb10ad3520dc67641579a216f7a7f",
+    "shared-time-picker.js": "944e6fb66bf82043eada2ba77d6fe0719d33be7ba53a5cbf4295441e4cc7b6a6"
+  }
+}

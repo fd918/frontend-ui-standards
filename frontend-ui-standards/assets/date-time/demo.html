@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>标准日期与时间组件演示</title>
+  <link rel="stylesheet" href="./shared-date-range-picker.css">
+  <link rel="stylesheet" href="./shared-time-picker.css">
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f3f6fa;color:#172033;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif}main{padding:24px;width:100%}h1{font-size:24px;margin:0 0 8px}p{line-height:1.7;color:#64748b}section{background:white;border:1px solid #dbe4f0;border-radius:12px;padding:20px;margin-top:18px}h2{font-size:17px;margin:0 0 16px}.demo-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px}button.demo-button{min-height:44px;border:1px solid #cbd5e1;border-radius:9px;background:white;color:#1d4ed8;padding:0 16px;font:inherit;cursor:pointer}button:focus-visible{outline:3px solid #93b4f9;outline-offset:2px}output{display:block;white-space:pre-wrap;overflow-wrap:anywhere;margin-top:12px;font-size:14px}#schedule{max-width:760px}#single{max-width:400px}.note{font-size:13px}@media(max-width:600px){main{padding:16px}section{padding:16px}}
+  </style>
+</head>
+<body><main>
+  <h1>标准日期与时间组件</h1>
+  <p>组件包 1.0.0 · 沿用已确认的选择操作与样式。此演示不运行自动任务，不连接业务接口。</p>
+  <section><h2>日期与日期范围</h2><div class="demo-row"><button id="range" class="demo-button">选择日期范围</button><button id="date" class="demo-button">选择单日</button></div><output id="date-result" aria-live="polite">尚未选择日期</output></section>
+  <section><h2>单个时刻</h2><div id="single"></div><button id="read-single" class="demo-button">读取时刻</button><output id="single-result" aria-live="polite"></output></section>
+  <section><h2>星期与多个时刻</h2><div id="schedule"></div><div class="demo-row" style="margin-top:16px"><button id="save" class="demo-button">校验并读取配置</button><button id="restore" class="demo-button">回填示例</button></div><output id="schedule-result" aria-live="polite">尚未读取配置</output><p class="note">启用开关只编辑配置。真实保存和任务执行由使用此组件的网站负责。</p></section>
+</main>
+<script src="./shared-date-range-picker.js"></script><script src="./shared-time-picker.js"></script>
+<script>
+  const beijingDay = () => {
+    const parts = new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Shanghai',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());
+    const part = type => parts.find(item => item.type === type).value;
+    return `${part('year')}-${part('month')}-${part('day')}`;
+  };
+  let selection = {start:beijingDay(),end:beijingDay()};
+  for (const id of ['range','date']) document.getElementById(id).onclick = () => {
+    YunzhanDateRangePicker.open(document.getElementById(id),{
+      mode:id === 'date' ? 'single' : 'range', baseDate:beijingDay(), ...selection,
+      onApply:value => { selection=value; document.getElementById('date-result').textContent=`${value.start} 至 ${value.end}`; }
+    });
+  };
+  const example={enabled:false,weekdays:[1,2,3,4,5],times:['09:30','18:00'],timeZone:'Asia/Shanghai'};
+  window.demoSchedule = StandardTimePicker.mount(document.getElementById('schedule'),{value:example});
+  window.demoSingle = StandardTimePicker.mount(document.getElementById('single'),{mode:'time',value:{times:['09:30']}});
+  document.getElementById('save').onclick=()=>{try{document.getElementById('schedule-result').textContent=JSON.stringify(demoSchedule.getValue(),null,2);}catch(error){document.getElementById('schedule-result').textContent=error.message;}};
+  document.getElementById('read-single').onclick=()=>{try{document.getElementById('single-result').textContent=demoSingle.getValue({required:true}).times[0];}catch(error){document.getElementById('single-result').textContent=error.message;}};
+  document.getElementById('restore').onclick=()=>{demoSchedule.setValue(example);document.getElementById('schedule-result').textContent='已回填示例，自动计划保持关闭';};
+</script></body></html>

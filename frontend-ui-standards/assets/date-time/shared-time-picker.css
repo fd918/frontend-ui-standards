@@ -1,0 +1,33 @@
+/* Established schedule appearance, scoped to prevent host-page collisions. */
+.standard-time-picker{--time-line:#dbe4f0;--time-blue:#2563eb;font-family:"Microsoft YaHei","PingFang SC",system-ui,sans-serif;color:#172033}
+.standard-time-picker *{box-sizing:border-box}
+.standard-time-picker button,.standard-time-picker input{font:inherit}
+.standard-time-picker button{cursor:pointer}
+.standard-time-picker button:disabled{cursor:default;opacity:.5}
+.standard-time-picker fieldset{min-width:0;border:0;padding:0;margin:0}
+.standard-time-picker legend,.standard-time-picker .schedule-label{display:block;font-size:13px;font-weight:700;color:#334155;margin:0 0 8px}
+.standard-time-picker .schedule-switch{display:inline-flex;align-items:center;gap:9px;min-height:44px;font-weight:700;white-space:nowrap;margin-bottom:12px}
+.standard-time-picker .schedule-switch input,.standard-time-picker .weekday-option input{position:absolute;opacity:0}
+.standard-time-picker .schedule-switch-track{width:46px;height:26px;border-radius:999px;background:#cbd5e1;padding:3px;transition:.2s}
+.standard-time-picker .schedule-switch-track::after{content:"";display:block;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(15,23,42,.25);transition:.2s}
+.standard-time-picker .schedule-switch input:checked+.schedule-switch-track{background:var(--time-blue)}
+.standard-time-picker .schedule-switch input:checked+.schedule-switch-track::after{transform:translateX(20px)}
+.standard-time-picker .weekday-options{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;margin-bottom:16px}
+.standard-time-picker .weekday-option span{min-height:40px;border:1px solid var(--time-line);border-radius:9px;background:#fff;display:grid;place-items:center;color:#526079;font-weight:700}
+.standard-time-picker .weekday-option input:checked+span{border-color:#9db8ff;background:#edf3ff;color:#1d4ed8}
+.standard-time-picker input:focus-visible,.standard-time-picker button:focus-visible,.standard-time-picker .weekday-option input:focus-visible+span,.standard-time-picker .schedule-switch input:focus-visible+.schedule-switch-track{outline:3px solid rgba(37,99,235,.3);outline-offset:2px}
+.standard-time-picker .schedule-times{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.standard-time-picker .schedule-times.single-time{grid-template-columns:minmax(0,240px)}
+.standard-time-picker .schedule-time-row{display:grid;grid-template-columns:minmax(0,1fr) 42px;gap:6px}
+.standard-time-picker .single-time .schedule-time-row{grid-template-columns:minmax(0,1fr)}
+.standard-time-picker .schedule-time-row input{height:44px;min-width:0;width:100%;border:1px solid var(--time-line);border-radius:9px;background:#fff;padding:0 10px;color:#172033;font-weight:700;font-variant-numeric:tabular-nums}
+.standard-time-picker .schedule-time-remove{height:44px;border:1px solid var(--time-line);border-radius:9px;background:#fff;color:#94a3b8;font-size:20px}
+.standard-time-picker .schedule-time-remove:hover{border-color:#fecaca;background:#fff7f7;color:#dc2626}
+.standard-time-picker .schedule-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px}
+.standard-time-picker .schedule-add{border:0;background:transparent;color:var(--time-blue);font-weight:700;min-height:40px;padding:0}
+.standard-time-picker .schedule-summary{font-size:12px;color:#64748b;text-align:right}
+.standard-time-picker .schedule-error{margin:8px 0 0;color:#b91c1c;font-size:13px}
+.standard-time-picker .schedule-error:empty{display:none}
+@media(max-width:700px){.standard-time-picker .weekday-options{grid-template-columns:repeat(4,minmax(0,1fr))}.standard-time-picker .schedule-times{grid-template-columns:repeat(2,minmax(0,1fr))}.standard-time-picker .schedule-times.single-time{grid-template-columns:1fr}.standard-time-picker .schedule-actions{align-items:flex-start;flex-direction:column}.standard-time-picker .schedule-summary{text-align:left}}
+@media(max-width:380px){.standard-time-picker .schedule-times{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){.standard-time-picker *,.standard-time-picker *::after{transition:none!important}}
