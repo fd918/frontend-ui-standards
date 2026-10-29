@@ -1,0 +1,7 @@
+interface:
+  display_name: "后端、数据复用与部署规范"
+  short_description: "按实际场景启用数据复用、后端、存储与发布规则，避免给简单项目增加架构"
+  default_prompt: "使用 $backend-data-deployment-standards 完成本次任务，先判断适用场景，只执行相关规则，不新增无必要的数据库或服务。"
+
+policy:
+  allow_implicit_invocation: true
