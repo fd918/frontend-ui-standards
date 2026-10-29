@@ -1,0 +1,7 @@
+interface:
+  display_name: "项目架构经验规范"
+  short_description: "按项目规模和本次改动确定模块分工、数据流、共享边界与兼容演进"
+  default_prompt: "使用 $project-architecture-standards 处理本次架构设计，先确认现状与适用范围，复用已有能力，给出最小必要结构和验证方法。"
+
+policy:
+  allow_implicit_invocation: true

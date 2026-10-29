@@ -1,6 +1,10 @@
 # 网站开发规范与标准日期时间组件
 
-发布包版本：1.1.0；前端 Skill：1.0.3；后端 Skill：1.0.0；日期时间组件：1.0.0。保存已确认的开发经验和现成组件，供后续网站、看板和后台开发复用。
+发布包版本：1.2.0；前端 Skill：1.0.3；后端 Skill：1.0.0；架构 Skill：1.0.0；日期时间组件：1.0.0。三个 Skill 分别保存页面实现、后端数据和项目架构经验，按实际任务使用。
+
+## 新电脑与其他工具
+
+[打开可复制的接入指令](SETUP-PROMPTS.txt)：包含 GPT／Codex、其他 AI 编码工具两种接入方式，以及新对话验证句。安装三个完整文件夹；工具不支持 Skill 时使用它实际支持的规则入口，不能假定所有工具都自动读取 `AGENTS.md`。普通聊天环境不能凭一段提示词获得本机文件权限。
 
 ## 按实际场景使用
 
@@ -10,6 +14,7 @@
 | --- | --- |
 | [前端规范](frontend-ui-standards/SKILL.md) | 创建或修改 PC 页面和交互；日期、表格、表单等仅在实际涉及时启用 |
 | [后端、数据复用与部署规范](backend-data-deployment-standards/SKILL.md) | 涉及接口、共享数据、持久化、后台任务或部署；先按场景表选择规则 |
+| [项目架构经验规范](project-architecture-standards/SKILL.md) | 规划新项目，或调整跨模块职责、数据流、共享边界、服务与环境结构；不因局部修改重做架构 |
 
 例如：静态介绍页不需要数据库规则；读取已有接口不必再建数据库；改数据库结构才执行迁移规则；改静态文案不需要数据库迁移。确实涉及但未验证的检查，不能标成“不适用”。
 
@@ -32,12 +37,15 @@
 - `frontend-ui-standards/references/date-time-components.md`：来源、接入示例、版本及已知边界。
 - `frontend-ui-standards/assets/date-time/`：日期/范围与时刻选择的原生 JS、CSS 和演示页。
 - `frontend-ui-standards/tests/`：组件逻辑测试及浏览器交互检查。
+- `backend-data-deployment-standards/SKILL.md`：按场景启用的后端、数据复用、存储、任务和发布规则。
+- `project-architecture-standards/SKILL.md`：模块职责、数据流、权威来源、隔离与兼容演进。
+- `SETUP-PROMPTS.txt`：新电脑安装、其他工具接入及新对话验证指令。
 
 ## 安装与使用
 
 **Codex 项目安装：** 将本仓库的 `frontend-ui-standards` 整个文件夹复制到目标项目的 `.agents/skills/frontend-ui-standards/`，保留资源与引用的相对路径。在该项目的 `AGENTS.md` 中加入下面的入口。需要让所有本机项目使用时，将该文件夹安装到当前 Codex 配置实际使用的个人 Skill 目录，并在个人全局规则中加入入口。
 
-后端、共享数据或部署任务也可按同样方式安装 `backend-data-deployment-standards` 文件夹到对应 Skill 目录。两个 Skill 可以独立安装，不要求只做静态页面的项目同时安装后端 Skill。
+后端、共享数据或部署任务可按同样方式安装 `backend-data-deployment-standards`；架构任务可安装 `project-architecture-standards`。三个 Skill 独立使用，只有任务相关时才加载，不要求纯静态页面启用后端规范。
 
 **其他支持 Agent Skills 的开发工具：** 按该工具的 Skill 目录规则安装整个文件夹。`SKILL.md` 与 JS/CSS 不依赖 Codex 专用接口；`agents/openai.yaml` 是可选的 Codex 界面元数据，其他工具可忽略。尚未对每种工具做安装验收，不保证任意工具自动识别。
 
@@ -53,11 +61,13 @@ references/date-time-components.md，使用 assets/date-time/ 的对应组件。
 说明情况，不得假称已使用标准组件，不修改无关页面。
 后端、共享数据、持久化、后台任务或部署工作先读取
 backend-data-deployment-standards，按本次实际场景启用规则；不增加无关功能。
+新项目规划或跨模块职责、数据流、服务边界变化时读取
+project-architecture-standards；局部修改不触发全项目架构设计。
 ```
 
 新对话可用这句话检查规则是否加载：
 
-> 开发前，请说明你读取了哪些前端规则，日期和时间选择将使用哪些文件及版本。
+> 先不要改代码。请说明实际读取的前端、后端和架构规范及其版本、组件位置，以及本次任务适用和不适用的部分。
 
 ## 预览与验证
 
