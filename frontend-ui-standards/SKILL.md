@@ -3,154 +3,156 @@ name: frontend-ui-standards
 description: 创建或修改网站、看板、后台、H5 和 Web UI 时使用。执行个人确认的页面布局与交互标准，直接复用随包保存的日期、日期范围和时刻选择组件，并验证加载、查询、保存、表格及弹窗行为。不用于纯视觉概念生成或独立的事后界面审计。
 license: MIT
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
-# Frontend UI Standards
+# 前端界面开发规范（Frontend UI Standards）
 
-Apply this skill to implementation work that creates or changes frontend pages and UI behavior. It governs component reuse, engineering consistency, dates and time, filters, tables, scrolling and overflow, pagination, forms, dialogs, buttons, loading/empty/error states, responsive behavior, mobile adaptation, shared-component extraction, and project design-system maintenance.
+本 Skill 用于创建或修改前端页面及交互行为，涵盖组件复用、工程一致性、日期与时间、筛选、表格、滚动与溢出、分页、表单、弹窗、按钮、加载／空数据／错误状态、响应式布局、手机适配、共享组件提取及项目设计规范维护。
 
-The goal is a UI that fits the existing project, works across relevant viewport sizes and input methods, and remains maintainable. Do not invent a new visual direction unless the user asks for one.
+目标是让界面符合现有项目，在相关屏幕尺寸和输入方式下可用，并便于后续维护。除非用户要求，不另起一套视觉风格。
 
-## Confirmed personal standards and bundled components
+正文采用中文，必要技术名称保留英文。需要检查翻译有无遗漏时，人工对照 [英文原文](references/english-reference.md)；执行以本文件和其引用的当前规则为准，不把历史英文对照当作第二份独立规则。
 
-Read [references/ui-rules.md](references/ui-rules.md) for applicable page implementation work. These are confirmed personal defaults, including efficient content width and preserving previous results while visibly querying. Do not treat successful empty results as errors or leave old results under new query labels.
+## 一、个人确认的标准与随包组件（Confirmed standards）
 
-Whenever a task involves choosing a date, date range, or time of day, also read [references/date-time-components.md](references/date-time-components.md) and use the corresponding JS/CSS in `assets/date-time/`. Copy the pinned files into the target project, record their package version and hashes, and adapt the integration to the framework while preserving the approved interaction and appearance. Start by stating the selected component/version and relevant rules. Do not silently substitute the host project's component library for these approved controls. If explicit project requirements conflict or required functionality is absent, explain the concrete conflict/gap and follow the user's instruction; do not rewrite unrelated existing controls.
+实施页面开发时，读取 [通用界面规则](references/ui-rules.md)。其中包括充分使用内容宽度、查询时保留原结果并明确提示查询中。成功但无结果与查询失败应分别处理，不能把旧数据放在新查询条件的标题下冒充新结果。
 
-The demo is `assets/date-time/demo.html`. Source revision, extraction date and source hashes are in [references/component-provenance.json](references/component-provenance.json). This skill is self-contained and must not depend on the original project directory or this computer's absolute paths. No component schedules jobs, saves application data, or makes network requests by itself.
+涉及日期、日期范围或时刻选择时，还必须读取 [日期时间组件说明](references/date-time-components.md)，使用 `assets/date-time/` 中对应的 JavaScript 和 CSS 文件。将固定版本的组件复制进目标项目，记录组件版本与文件哈希；接入不同框架时保留已确认的交互和外观。开始实现前说明采用的组件、版本及相关规则。不得静默换用项目组件库中的另一套选择器。若项目明确要求存在冲突或现有组件缺少必要能力，应说明具体冲突／缺口，并遵循用户指令，不改写无关的既有控件。
 
-## Inspect before changing code
+演示位于 `assets/date-time/demo.html`。[组件来源记录](references/component-provenance.json)包含来源提交、提取日期与源文件哈希。本 Skill 必须能独立使用，不依赖原项目目录或本机绝对路径。组件本身不执行定时任务、不保存业务数据、不发起网络请求。
 
-Before implementation, establish the project's actual conventions and available assets. Read or inspect, when present and relevant:
+## 二、修改代码前检查项目现状（Inspect before changing code）
 
-- project-level `AGENTS.md` and `README.md`;
-- `package.json` or the equivalent dependency/build configuration;
-- the frontend framework and UI component library in use;
-- shared component, layout, utility, formatting, theme, icon, font, and brand-asset directories;
-- existing pages with behavior similar to the requested change;
-- `docs/DESIGN_SYSTEM.md` and `design-system/MASTER.md`.
+实现前确认项目实际约定和可用资产。下列内容存在且与任务相关时，应读取或检查：
 
-Also identify the available test, build, type-check, lint, and run commands and check the current working-tree state. Preserve unrelated user changes.
+- 项目级 `AGENTS.md` 和 `README.md`。
+- `package.json` 或对应的依赖、构建配置。
+- 当前前端框架和界面组件库。
+- 共享组件、布局、工具函数、格式化函数、主题、图标、字体和品牌素材目录。
+- 与本次需求行为相似的已有页面。
+- `docs/DESIGN_SYSTEM.md` 和 `design-system/MASTER.md`。
 
-Treat design-system documents as follows:
+同时确认可用的测试、构建、类型检查、lint（代码规范检查）和启动命令，检查 Git 工作区状态，保护与本次任务无关的用户改动。
 
-- If only `design-system/MASTER.md` exists, use it as the canonical source and do not create a duplicate `docs/DESIGN_SYSTEM.md`.
-- If only `docs/DESIGN_SYSTEM.md` exists, use it as the canonical source.
-- If both exist, inspect both for duplication or conflict before editing. Do not maintain the same rule in two places; default to `design-system/MASTER.md` as the maintenance target unless the project explicitly identifies another canonical source.
-- Resolve stale documentation against current code and confirmed project behavior rather than assuming either document is current.
+设计规范文档按以下规则处理：
 
-Before editing, state briefly what will change, which files are expected to change, why the approach fits the project, likely effects on existing behavior, and how success will be verified. For small, low-risk tasks this may be one concise update.
+- 只有 `design-system/MASTER.md` 时，以它为权威来源，不另建重复的 `docs/DESIGN_SYSTEM.md`。
+- 只有 `docs/DESIGN_SYSTEM.md` 时，以它为权威来源。
+- 两份都存在时，先检查重复与冲突。同一规则只维护一处；项目未另行指定时，默认维护 `design-system/MASTER.md`。
+- 文档可能过期，应结合当前代码和已确认的实际行为判断，不能直接假定其中一份一定最新。
 
-## Reuse before creating
+编辑前简要说明：改什么、预计涉及哪些文件、为什么适合当前项目、对已有行为的影响，以及如何验证。低风险的小改动用一段简短说明即可。
 
-Search the project for existing implementations of:
+## 三、先复用，再新增（Reuse before creating）
 
-- date, date-range, and time pickers;
-- filter bars;
-- data tables, pagination, dialogs, buttons, and page-layout containers;
-- loading, empty, error, no-result, and permission-denied states;
-- logos, icons, fonts, themes, and brand assets;
-- formatting functions and other UI-related utilities.
+先在项目中查找以下已有实现：
 
-For dates and times, use the approved bundled components above. For other UI behavior, reuse a suitable existing component directly. If it is close but insufficient, prefer the smallest backward-compatible parameter or behavior extension over copying similar code.
+- 日期、日期范围和时刻选择器。
+- 筛选栏。
+- 数据表格、分页、弹窗、按钮和页面布局容器。
+- 加载、空数据、错误、筛选无结果和无权限状态。
+- Logo、图标、字体、主题和品牌素材。
+- 格式化函数及其他界面工具函数。
 
-Create a new similar component only when the existing component cannot meet the requirement, extending it would break many consumers, the business role is materially different, or reuse would create clear coupling or complexity. Explain the concrete reason before adding it. When a second page needs the same non-trivial UI behavior, extract or reuse a shared component instead of duplicating the implementation.
+日期和时间使用前述已确认的随包组件；其他界面行为优先复用适用的已有组件。已有能力接近需求但略有不足时，优先做最小、向后兼容的参数或行为扩展，不复制相似代码另行维护。
 
-## Dates and time
+只有现有组件不能满足需求、扩展会破坏多个调用方、业务职责有明显差异，或复用反而造成明显耦合与复杂度时，才新增相似组件，并先解释具体原因。第二个页面需要同一段较复杂的交互时，应提取或复用共享组件，不再复制实现。
 
-- Use the approved bundled date/time components and their documented integration APIs; consult existing project wrappers before adding another wrapper.
-- Keep date selection, date-range selection, and time selection as distinct responsibilities; combine them only when the business interaction genuinely requires it.
-- Confirm and keep explicit the display format, API format, stored format, and timezone. Do not silently treat local time, UTC, and timezone-free dates as interchangeable.
-- Use the project's established date format across pages unless a documented business rule requires a different one.
-- Verify both create and edit flows, including parsing and correct value restoration on edit.
-- Invalid or unsupported values need a clear Chinese message appropriate to the field and user action.
-- Preserve the user's approved date/time controls across projects. Adapt unrelated page branding, controls, and layout to each project; this preference does not require introducing a component library or replacing unrelated UI.
+## 四、日期与时间（Dates and time）
 
-## Tables and long lists
+- 使用已确认的随包日期／时间组件及其文档中的接入接口；新增框架包装层前，先检查项目是否已有可复用的包装层。
+- 日期、日期范围和时刻选择保持职责独立，业务确有需要时再组合。
+- 明确显示格式、接口格式、存储格式和时区，不能把本地时间、UTC（协调世界时）和不带时区的日期混用。
+- 各页面沿用项目已确定的日期格式；业务规则明确要求不同时，记录差异。
+- 新建和编辑都要验证，包括解析正确、编辑时原值正确回填。
+- 非法或不支持的值应给出符合字段和当前操作的中文提示。
+- 跨项目保留用户确认的日期／时间控件；其余品牌、控件和布局按项目适配，不因此引入整套组件库或替换无关界面。
 
-Choose table behavior from actual content and interaction needs:
+## 五、表格与长列表（Tables and long lists）
 
-- Do not add sticky headers to a simple short table by default. Use them when users must keep column meaning visible while scanning long content.
-- For wide tables, fix only genuinely important identity or action columns when helpful.
-- Contain horizontal overflow inside the table region; the table must not create a page-level horizontal scrollbar.
-- After fixing columns or headers, check widths, overlap, stacking order, alignment, scroll synchronization, and mobile operability.
-- Give every column a purposeful width or sizing strategy. Keep numeric columns consistently aligned and action columns at a stable width.
-- Let ordinary prose wrap when readable. Identifiers such as order numbers, filenames, and user IDs may truncate only when the user can reveal or copy the complete value, for example with a tooltip, expandable cell, details view, or accessible label.
-- Provide distinct handling for loading, no data, request failure, filter with no results, and insufficient permission. Do not render misleading zero or empty content for an error.
-- For long datasets choose pagination, virtual scrolling, or progressive loading based on scale and interaction needs. Do not render the entire dataset unconditionally.
+根据实际内容和操作需要确定表格行为：
 
-## Overflow and scrolling
+- 简单短表不默认固定表头；长内容浏览时需要持续看到列含义，再使用固定表头。
+- 宽表按需要只固定重要的身份列或操作列。
+- 横向溢出限制在表格区域内部，不能让整页出现横向滚动条。
+- 固定列或表头后，检查宽度、重叠、层级、对齐、滚动同步及手机操作情况。
+- 每列都应有合理的宽度或尺寸策略；数字列一致对齐，操作列宽度稳定。
+- 普通文字在可读的前提下换行；订单号、文件名、用户 ID 等标识只有在可以通过提示、展开单元格、详情或无障碍标签查看／复制完整值时，才允许截断。
+- 加载、无数据、请求失败、筛选无结果和权限不足分别处理；错误不能显示成误导性的 0 或空白。
+- 大量数据按规模及交互需要采用分页、虚拟滚动或逐步加载，不无条件一次渲染全量数据。
 
-- Prefer wrapping for normal text.
-- Truncate long identifiers or filenames only with a way to access the full value.
-- Put code, logs, and other whitespace-sensitive content in their own scroll container.
-- In dialogs with long content, scroll only the body so the title and actions remain available.
-- Prevent meaningless page-level horizontal scrolling.
-- Do not solve mobile layout problems by compressing text to an unreadable size.
-- Re-check truncation and wrapping when container width changes; do not rely on a single desktop width.
+## 六、内容溢出与滚动（Overflow and scrolling）
 
-## Forms, dialogs, and controls
+- 普通文字优先换行。
+- 长标识和文件名需要截断时，必须提供获取完整内容的方式。
+- 代码、日志等对空格和换行敏感的内容放在独立滚动区域。
+- 长内容弹窗只让正文滚动，标题和操作按钮始终可达。
+- 避免无意义的整页横向滚动。
+- 不通过把文字缩到难以阅读来解决手机布局问题。
+- 容器宽度变化时重新检查截断与换行，不能只验证一个桌面宽度。
 
-- Keep the same business field's label, value format, validation, and error wording consistent across create, edit, and filter contexts, unless the context requires a documented difference.
-- Make required fields, validation errors, disabled states, submission progress, and save success/failure feedback unambiguous.
-- Describe the concrete consequence of a destructive action; a generic “确定吗” is not sufficient.
-- Keep dialogs within the viewport. When content is long, preserve access to the title and action buttons.
-- Give icon-only buttons a clear Chinese accessible name using the framework's supported labeling mechanism.
-- Reuse the project's button hierarchy and state patterns instead of creating page-specific variants.
+## 七、表单、弹窗与控件（Forms, dialogs, and controls）
 
-## Responsive behavior and accessibility
+- 同一业务字段在新建、编辑和筛选中的标签、值格式、校验及错误文案保持一致；场景确需差异时明确记录。
+- 必填、校验错误、禁用、提交中、保存成功和失败的反馈都必须清楚。
+- 删除等破坏性操作应说明具体后果，不能只写“确定吗”。
+- 弹窗不超出可视区域；长内容下标题和操作按钮仍然可用。
+- 纯图标按钮使用框架支持的标注方式，提供明确的中文无障碍名称。
+- 复用项目按钮层级和状态模式，不为每个页面另建一套按钮变体。
 
-Validate at the viewport widths relevant to the project, including desktop and mobile when supported. At minimum confirm:
+## 八、响应式布局与无障碍（Responsive behavior and accessibility）
 
-- no meaningless horizontal page scrolling;
-- primary controls are keyboard-operable and have a clearly visible focus state;
-- form controls have explicit, programmatically associated labels;
-- color is not the only indication of status or error;
-- mobile tap targets remain usable and controls do not overlap;
-- enlarged text does not hide or discard core content or actions;
-- loading, empty, error, no-result, permission, and disabled states are represented as applicable;
-- text is not incorrectly clipped as containers resize.
+按项目实际支持的视口宽度验证，包括支持范围内的桌面和手机。至少确认：
 
-Use responsive layout changes, internal scrolling, wrapping, progressive disclosure, or an appropriate mobile representation according to the content. Do not preserve a desktop table or dialog layout at the expense of mobile operability.
+- 没有无意义的整页横向滚动。
+- 主要控件可以通过键盘操作，并有清晰可见的焦点状态。
+- 表单控件具有明确、通过代码关联的标签。
+- 状态和错误不只依靠颜色表达。
+- 手机点击区域可用，控件不重叠。
+- 放大文字后，核心内容和操作不被遮挡或丢弃。
+- 按场景提供加载、空数据、错误、无结果、权限和禁用状态。
+- 容器缩放时文字不会被错误裁切。
 
-## Maintain the project design system
+根据内容采用响应式布局、内部滚动、换行、逐步展开或适合手机的展示形式，不能为了保留桌面表格或弹窗原布局而牺牲手机可用性。
 
-When implementation confirms stable shared components or durable UI rules, update one canonical design-system document:
+## 九、维护项目设计规范（Maintain the project design system）
 
-1. update `design-system/MASTER.md` when it exists and is canonical;
-2. otherwise update `docs/DESIGN_SYSTEM.md` when it exists;
-3. if neither exists and this is a medium or complex frontend project, create a minimal `docs/DESIGN_SYSTEM.md`;
-4. for a simple or one-off project, do not create a design-system document solely for formality.
+实现中确认了稳定的共享组件或长期界面规则后，只更新一份权威设计规范文档：
 
-Record only verified project facts that will help later work, such as:
+1. 存在且被指定为权威来源的 `design-system/MASTER.md`，优先更新。
+2. 否则更新已有的 `docs/DESIGN_SYSTEM.md`。
+3. 两者都没有且项目属于中型或复杂前端项目时，创建最小必要的 `docs/DESIGN_SYSTEM.md`。
+4. 简单或一次性项目不为形式而单独创建设计规范文档。
 
-- current frontend stack and UI component library;
-- confirmed logo and brand-asset paths;
-- shared component names and exact paths;
-- date/time display, API, storage, and timezone conventions;
-- table scrolling and sticky-column/header rules;
-- page layout and responsive behavior;
-- stable interaction conventions.
+只记录已经核实、对后续开发有帮助的项目事实，例如：
 
-Never invent component or asset paths, aspirational standards, or rules not yet adopted by the project. Avoid duplicating the same rule across both design-system documents.
+- 当前前端技术栈和界面组件库。
+- 已确认的 Logo 与品牌素材路径。
+- 共享组件名称和准确路径。
+- 日期／时间的显示、接口、存储和时区约定。
+- 表格滚动、固定列和固定表头规则。
+- 页面布局与响应式行为。
+- 稳定的交互约定。
 
-## Verification and completion
+不得编造组件或素材路径，不把尚未采用的设想写成既有标准，不在两份设计规范中重复维护同一规则。
 
-Run the checks that the project actually supports and that are relevant to the change. Prefer, in order:
+## 十、验证与交付（Verification and completion）
 
-1. existing automated tests;
-2. build;
-3. type checking;
-4. lint;
-5. browser validation of the main flow;
-6. desktop and mobile viewport checks;
-7. focused checks for table scrolling, sticky headers/columns, overflow, create/edit/save, and value restoration.
+执行项目实际支持且与改动相关的检查，优先顺序为：
 
-Exercise the states changed by the task, not only the default happy path. Report the commands or flows run and their actual results. If a check cannot be run, state why and give the shortest manual verification path. Do not claim the implementation is complete, fixed, or working without fresh evidence.
+1. 已有自动化测试。
+2. 构建。
+3. 类型检查。
+4. lint（代码规范检查）。
+5. 主要流程的浏览器验证。
+6. 桌面和手机视口检查，范围以项目实际支持为准。
+7. 针对表格滚动、固定表头／列、溢出、新建／编辑／保存及值回填的专项检查。
 
-## Boundaries with other skills
+验证本次改动涉及的各种状态，不能只测默认成功流程。报告实际执行的命令或操作及真实结果。无法执行某项检查时，说明原因并给出最短人工验证步骤。没有新的验证证据，不得宣称实现完成、问题修复或功能可用。
 
-- `ui-ux-pro-max`, when available and relevant, supplies visual direction such as composition, color, typography, layout exploration, and design-system suggestions. This skill applies the engineering constraints and project conventions; do not repeat visual ideation already completed there.
-- `web-design-guidelines`, when available and requested for review, performs the post-implementation UI, UX, and accessibility audit. This skill handles implementation-time consistency and verification; do not duplicate a completed audit.
-- When a task needs both, use each only for its distinct phase and preserve the user's requested scope.
+## 十一、与其他 Skill 的分工（Boundaries with other skills）
+
+- `ui-ux-pro-max` 可用且相关时，负责构图、配色、字体、布局探索和设计系统建议；本 Skill 负责工程约束与项目一致性，不重复已完成的视觉方案探索。
+- 用户要求审查且 `web-design-guidelines` 可用时，由它负责实现后的界面、体验和无障碍审查；本 Skill 负责开发阶段的一致性与验证，不重复已完成的审查。
+- 同一任务需要多个 Skill 时，各自只用于对应阶段，并保持用户要求的任务范围。

@@ -7,7 +7,7 @@
 - `assets/date-time/shared-date-range-picker.js` / `.css`：原生 JavaScript/CSS 日期组件，支持单日和日期范围。共享文件最早来自 2026-08-24 的经营看板日期筛选开发（提交 `feb9282a`），同批接入每日事项，随后经多个页面演进。本包保留提取时的原文件内容。
 - `assets/date-time/shared-time-picker.js` / `.css`：从每日事项 `daily-work-dashboard.html` 的 `scheduleTimeRow`、`scheduleSummary`、`bindScheduleControls` 及配套样式提取。保留 HH:mm 输入、44px 输入高度、增删时间、星期选择和关闭计划语义；适配为独立 API、容器隔离样式和中文校验，增加单时刻模式及销毁接口。
 - `assets/date-time/demo.html`：完全本地的演示，无业务请求、通知或真实数据。
-- [component-provenance.json](component-provenance.json)：提取日期、来源提交和源文件 SHA256。包版本 1.0.0；日期文件的来源哈希可用于验证原样保留。
+- [component-provenance.json](component-provenance.json)：提取日期、来源提交和源文件 SHA256。组件版本 1.0.0，独立于 Skill 规则版本；日期文件的来源哈希可用于验证原样保留。
 
 来源项目是原生网页看板。这里仅携带通用 UI 代码，不包含来源项目的服务、数据、账号、品牌或环境配置。时刻输入沿用原来的 HTML `input[type=time]`，输入框样式统一，系统弹出面板可能随浏览器/操作系统变化；不要宣称在所有系统上弹出面板像素一致。
 

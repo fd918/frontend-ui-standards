@@ -1,6 +1,14 @@
 # 个人前端开发标准与日期时间组件
 
-版本：1.0.0。将已确认的页面开发经验、日期范围组件和时刻组件一起保存，供后续网站、看板和后台开发复用。
+Skill 版本：1.0.1；组件版本：1.0.0。将已确认的页面开发经验、日期范围组件和时刻组件一起保存，供后续网站、看板和后台开发复用。
+
+## 中文阅读与英文对照
+
+- [中文完整规范](frontend-ui-standards/SKILL.md)：供开发工具执行，也方便人工逐项检查。
+- [英文原文对照](frontend-ui-standards/references/english-reference.md)：保留上一版英文正文，供检查翻译有无遗漏；执行以中文规范为准。
+- [具体界面规则](frontend-ui-standards/references/ui-rules.md)与[组件来源、用法](frontend-ui-standards/references/date-time-components.md)也使用中文。
+
+1.0.1 将原有 11 个章节的全部要求翻译为中文，保留必要英文术语和原文对照；组件代码、样式和行为保持 1.0.0。MIT 许可证保留原文。
 
 ## 内容
 
