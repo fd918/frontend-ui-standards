@@ -1,0 +1,7 @@
+interface:
+  display_name: "浏览器插件开发规范"
+  short_description: "先执行插件通用规则，再按需启用采集、账号、失效监控、恢复及回填场景"
+  default_prompt: "使用 $browser-extension-standards 开发本次插件功能，先说明通用要求和实际场景，只读取对应章节，不默认新增监控、自动登录或后台任务。"
+
+policy:
+  allow_implicit_invocation: true
